@@ -31,6 +31,14 @@ A simple Flask web application for managing student tasks, deadlines, priorities
 ```bash
 pip install -r requirements.txt
 
+## How to Run
+
+1. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Screenshot
 
 ![App Screenshot](student-task-manager.png)
