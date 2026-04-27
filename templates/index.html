@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Task Manager</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            color: #1f2937;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 50px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+            background-color: white;
+            padding: 35px;
+            border-radius: 22px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 34px;
+            color: #111827;
+        }
+
+        .header p {
+            margin-top: 8px;
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        .banner {
+            padding: 14px 16px;
+            margin-bottom: 18px;
+            border-radius: 12px;
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+            font-weight: bold;
+        }
+
+        .task-form {
+            display: grid;
+            grid-template-columns: 1fr 170px 150px 130px;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .edit-form {
+            padding: 20px;
+            border: 1px solid #c7d2fe;
+            background-color: #eef2ff;
+            border-radius: 18px;
+            margin-bottom: 28px;
+        }
+
+        .edit-form h2 {
+            margin-top: 0;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 120px;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        input, select {
+            padding: 13px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            background-color: white;
+        }
+
+        input:focus, select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        button {
+            border: none;
+            border-radius: 12px;
+            background-color: #4f46e5;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background-color: #4338ca;
+        }
+
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 16px;
+            color: #111827;
+        }
+
+        .tasks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .task-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            background-color: #ffffff;
+            transition: 0.2s;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .task-info {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .task-title {
+            font-size: 17px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .task-date {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .status, .priority {
+            display: inline-block;
+            width: fit-content;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .completed {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .overdue {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .today {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .on-time {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .priority-high {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .priority-medium {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .priority-low {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .action-link {
+            text-decoration: none;
+            padding: 9px 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .complete-link {
+            background-color: #ecfdf5;
+            color: #047857;
+        }
+
+        .complete-link:hover {
+            background-color: #d1fae5;
+        }
+
+        .edit-link {
+            background-color: #eef2ff;
+            color: #4338ca;
+        }
+
+        .edit-link:hover {
+            background-color: #e0e7ff;
+        }
+
+        .delete-link {
+            background-color: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .delete-link:hover {
+            background-color: #fee2e2;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+            border: 2px dashed #d1d5db;
+            border-radius: 16px;
+            background-color: #f9fafb;
+        }
+
+        .small-note {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 850px) {
+            .task-form,
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+
+            button {
+                padding: 13px;
+            }
+
+            .task-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page">
+        <div class="container">
+
+            <div class="header">
+                <h1>Student Task Manager</h1>
+                <p>Organize your assignments, deadlines, priorities, and study tasks in one place.</p>
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="banner">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% if edit_task %}
+                <div class="edit-form">
+                    <h2>Edit Task</h2>
+
+                    <form class="task-form" action="/update/{{ edit_index }}" method="POST">
+                        <input type="text" name="title" value="{{ edit_task.title }}" required>
+
+                        <input type="date" name="due_date" value="{{ edit_task.due_date }}" required>
+
+                        <select name="priority" required>
+                            <option value="High" {% if edit_task.priority == "High" %}selected{% endif %}>High</option>
+                            <option value="Medium" {% if edit_task.priority == "Medium" %}selected{% endif %}>Medium</option>
+                            <option value="Low" {% if edit_task.priority == "Low" %}selected{% endif %}>Low</option>
+                        </select>
+
+                        <button type="submit">Update</button>
+                    </form>
+
+                    <a class="action-link delete-link" href="/">Cancel</a>
+                </div>
+            {% endif %}
+
+            <form class="task-form" action="/add" method="POST">
+                <input type="text" name="title" placeholder="Enter a new task..." required>
+
+                <input type="date" name="due_date" required>
+
+                <select name="priority" required>
+                    <option value="High">High Priority</option>
+                    <option value="Medium" selected>Medium Priority</option>
+                    <option value="Low">Low Priority</option>
+                </select>
+
+                <button type="submit">Add Task</button>
+            </form>
+
+            <form class="search-form" action="/" method="GET">
+                <input type="text" name="search" placeholder="Search tasks..." value="{{ search_query }}">
+                <button type="submit">Search</button>
+            </form>
+
+            <h2 class="section-title">My Tasks</h2>
+            <div class="small-note">
+                Tasks are sorted by completion status, closest due date, and priority.
+            </div>
+
+            {% if tasks %}
+                <div class="tasks-list">
+                    {% for task in tasks %}
+
+                        <div class="task-card">
+                            <div class="task-info">
+                                <div class="task-title">
+                                    {{ task.title }}
+                                </div>
+
+                                <div class="task-date">
+                                    Due date: {{ task.due_date }}
+                                </div>
+
+                                <div class="badges">
+                                    {% if task.status == "Completed" %}
+                                        <span class="status completed">Completed</span>
+                                    {% elif task.status == "Overdue" %}
+                                        <span class="status overdue">Overdue</span>
+                                    {% elif task.status == "Due Today" %}
+                                        <span class="status today">Due Today</span>
+                                    {% else %}
+                                        <span class="status on-time">On Time</span>
+                                    {% endif %}
+
+                                    {% if task.priority == "High" %}
+                                        <span class="priority priority-high">High Priority</span>
+                                    {% elif task.priority == "Medium" %}
+                                        <span class="priority priority-medium">Medium Priority</span>
+                                    {% else %}
+                                        <span class="priority priority-low">Low Priority</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="actions">
+                                {% if not task.completed %}
+                                    <a class="action-link complete-link" href="/complete/{{ loop.index0 }}">
+                                        Complete
+                                    </a>
+                                {% endif %}
+
+                                <a class="action-link edit-link" href="/edit/{{ loop.index0 }}">
+                                    Edit
+                                </a>
+
+                                <a class="action-link delete-link" href="/delete/{{ loop.index0 }}">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    No tasks found. Add a new task or change your search.
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+</body>
+</html>
