@@ -30,13 +30,26 @@ A simple Flask web application for managing student tasks, deadlines, priorities
 
 ```bash
 pip install -r requirements.txt
+```
 
-## How to Run
+2. Create a `.env` file:
 
-1. Install dependencies:
+```env
+EMAIL_ADDRESS=your_email@gmail.com
+EMAIL_PASSWORD=your_app_password
+RECEIVER_EMAIL=your_email@gmail.com
+```
+
+3. Run the app:
 
 ```bash
-pip install -r requirements.txt
+python app.py
+```
+
+4. Open in browser:
+
+```text
+http://127.0.0.1:5000
 ```
 
 ## Screenshot
