@@ -1,6 +1,6 @@
 # Student Task Manager
 
-A simple Flask web application for managing student tasks, deadlines, priorities, and email reminders.
+Task managment web application build with Flask, Python, supporting task organization, priority tracking, deadlines, and email reminders.
 
 ## Features
 
